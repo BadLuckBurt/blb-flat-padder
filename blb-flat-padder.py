@@ -63,7 +63,8 @@ for archiveId, records in archives.items():
         for frameId, frame in frames.items():
             widthDifference = max(0, frameMax[0] - frame["size"][0])
             heightDifference = max(0, frameMax[1] - frame["size"][1])
-            print("FrameID:", frameId, "Difference:", widthDifference, heightDifference)
+            print("ArchiveID:", archiveId, "RecordID:", recordId, "FrameID:", frameId,
+                  "Difference:", widthDifference, heightDifference)
 
             paddingLeft = math.floor(widthDifference / 2)
             paddingRight = widthDifference - paddingLeft
