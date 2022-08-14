@@ -23,7 +23,7 @@ def find_frame_max(_frames):
 
 
 # im_new = add_margin(im, 50, 10, 0, 100, (128, 0, 64))
-fileRegEx = r"(\d+)\_(\d+)\-(\d+).(?:png|PNG)"
+fileRegEx = r"^(\d+)\_(\d+)\-(\d+).(?:png|PNG)$"
 workDirectory = os.getcwd()
 workDirectoryContents = os.scandir()
 
