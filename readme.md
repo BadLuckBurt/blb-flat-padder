@@ -1,4 +1,4 @@
-#Setting up and using blb-flat-padder
+# Setting up and using blb-flat-padder#
 
 To set up and run this script, please follow the steps below:
 
