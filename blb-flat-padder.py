@@ -74,3 +74,5 @@ for archiveId, records in archives.items():
             newImg = add_margin(img, paddingTop, paddingRight, paddingBottom, paddingLeft, (0, 0, 0, 0))
             img.close()
             newImg.save(frame["path"])
+
+print("successfully padded all images")
