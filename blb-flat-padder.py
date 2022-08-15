@@ -71,7 +71,7 @@ for archiveId, records in archives.items():
             paddingTop = heightDifference
             paddingBottom = 0
 
-            emissivePath = frame["path"].replace(".png", "_Emissive.png")
+            emissivePath = frame["path"].replace(".png", "_Emission.png")
             if os.path.exists(emissivePath):
                 img = Image.open(emissivePath)
                 newImg = add_margin(img, paddingTop, paddingRight, paddingBottom, paddingLeft, (0, 0, 0, 0))
