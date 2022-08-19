@@ -63,7 +63,6 @@ scaleModifier = args.scale
 scaleModifier[0] = float(scaleModifier[0])
 scaleModifier[1] = float(scaleModifier[1])
 
-tree = ET()
 archives = BLBFunctions.getArchives()
 
 for archiveId, records in archives.items():
@@ -79,7 +78,9 @@ for archiveId, records in archives.items():
                 newScale = [1, 1]
                 xmlPath = frame["path"].replace(".png", ".xml")
                 if os.path.exists(xmlPath):
+                    tree = ET()
                     tree = tree.parse(xmlPath)
+
                     existingScale = findScale(tree)
                     # Apply modifier to existing scale values
                     newScale[0] = existingScale[0] * scaleModifier[0]
