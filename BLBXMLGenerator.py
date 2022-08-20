@@ -6,11 +6,22 @@ import BLBFunctions
 
 def parseArgs():
     _parser = argparse.ArgumentParser()
+    _parser.add_argument("-ax", "--archiveXML", nargs='?', default='False', help="Generates XML at archive level")
+    _parser.add_argument("-rx", "--recordXML", nargs='?', default='True', help="Generates XML at record level")
     _parser.add_argument("-r", "--renderMode", nargs='?', help="Sets renderMode")
     _parser.add_argument("-e", "--emission", nargs='?', help="Force Emission setting")
-    _parser.add_argument("-uv", "--uv", nargs='+', help="Sets uvX value")
-    _parser.add_argument("-s", "--scale", nargs='+', default=[1, 1], help="Sets scale values")
-    return _parser.parse_args()
+    _parser.add_argument("-uv", "--uv", nargs=2, help="Sets uvX value")
+    _parser.add_argument("-sm", "--scaleMultiplier", nargs=2, help="Multiplies scale values")
+    _args = _parser.parse_args()
+    if (
+            _args.renderMode is None and
+            _args.emission is None and
+            _args.uv is None and
+            _args.scaleMultiplier
+    ) is None:
+        print("No script arguments found. Ending script execution. Please supply at least one argument.")
+        exit()
+    return _args
 
 
 def generateXML(_renderMode=None, _emission=None, _uv=None, _scale=None):
@@ -59,14 +70,49 @@ if uv is not None:
     uv[0] = float(uv[0])
     uv[1] = float(uv[1])
 
-scaleModifier = args.scale
-scaleModifier[0] = float(scaleModifier[0])
-scaleModifier[1] = float(scaleModifier[1])
+scaleMultiplier = args.scaleMultiplier
+if scaleMultiplier is None:
+    scaleMultiplier = [1, 1]
+scaleMultiplier[0] = float(scaleMultiplier[0])
+scaleMultiplier[1] = float(scaleMultiplier[1])
 
 archives = BLBFunctions.getArchives()
 
 for archiveId, records in archives.items():
     for recordId, frames in records.items():
+        if str(recordId) == "path":
+            if args.archiveXML == "True":
+                xmlPath = os.path.join(frames, str(archiveId) + ".xml")
+                newScale = [1, 1]
+                if os.path.exists(xmlPath):
+                    tree = ET()
+                    tree = tree.parse(xmlPath)
+
+                    existingScale = findScale(tree)
+                    # Apply modifier to existing scale values
+                    newScale[0] = existingScale[0] * scaleMultiplier[0]
+                    newScale[1] = existingScale[1] * scaleMultiplier[1]
+                    if renderMode is None:
+                        renderMode = findXMLValue(tree, "renderMode", renderMode)
+
+                    existingUV = findUV(tree)
+                    if uv is None and existingUV is not None:
+                        uv = existingUV
+                else:
+                    # Apply modifier to default scale values
+                    newScale[0] = newScale[0] * scaleMultiplier[0]
+                    newScale[1] = newScale[1] * scaleMultiplier[1]
+
+                newXML = generateXML(_renderMode=renderMode, _emission=emission, _uv=uv, _scale=newScale)
+                strXML = "\n"
+                strXML = strXML.join(newXML)
+                with open(xmlPath, 'w') as f:
+                    f.write(strXML)
+            continue
+
+        if args.recordXML == "False":
+            continue
+
         for frameId, frame in frames.items():
             if int(frameId) == 0:
                 # change emission setting based on emission image existence
@@ -83,8 +129,8 @@ for archiveId, records in archives.items():
 
                     existingScale = findScale(tree)
                     # Apply modifier to existing scale values
-                    newScale[0] = existingScale[0] * scaleModifier[0]
-                    newScale[1] = existingScale[1] * scaleModifier[1]
+                    newScale[0] = existingScale[0] * scaleMultiplier[0]
+                    newScale[1] = existingScale[1] * scaleMultiplier[1]
                     if renderMode is None:
                         renderMode = findXMLValue(tree, "renderMode", renderMode)
 
@@ -93,8 +139,8 @@ for archiveId, records in archives.items():
                         uv = existingUV
                 else:
                     # Apply modifier to default scale values
-                    newScale[0] = newScale[0] * scaleModifier[0]
-                    newScale[1] = newScale[1] * scaleModifier[1]
+                    newScale[0] = newScale[0] * scaleMultiplier[0]
+                    newScale[1] = newScale[1] * scaleMultiplier[1]
 
                 newXML = generateXML(_renderMode=renderMode, _emission=emission, _uv=uv, _scale=newScale)
                 strXML = "\n"

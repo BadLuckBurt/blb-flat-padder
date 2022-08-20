@@ -21,6 +21,7 @@ def getArchives():
                         archiveId = searchResult.group(1)
                         if archiveId not in archives:
                             archives[archiveId] = {}
+                            archives[archiveId]["path"] = entry.path
 
                         recordId = searchResult.group(2)
                         if recordId not in archives[archiveId]:
