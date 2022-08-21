@@ -31,6 +31,8 @@ archives = BLBFunctions.getArchives()
 
 for archiveId, records in archives.items():
     for recordId, frames in records.items():
+        if str(recordId) == "path":
+            continue
         frameMax = find_frame_max(frames)
         for frameId, frame in frames.items():
             widthDifference = max(0, frameMax[0] - frame["size"][0])

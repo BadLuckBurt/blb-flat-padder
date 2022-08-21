@@ -17,8 +17,8 @@ def parseArgs():
             _args.renderMode is None and
             _args.emission is None and
             _args.uv is None and
-            _args.scaleMultiplier
-    ) is None:
+            _args.scaleMultiplier is None
+    ):
         print("No script arguments found. Ending script execution. Please supply at least one argument.")
         exit()
     return _args
