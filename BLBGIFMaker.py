@@ -6,12 +6,13 @@ import argparse
 
 def parseArgs():
     _parser = argparse.ArgumentParser()
-    _parser.add_argument("-a", "--archiveId", nargs='?', help="Target a specific archive")
-    _parser.add_argument("-r", "--recordId", nargs='?', help="Target a specific record")
+    _parser.add_argument("-a", "--archiveIds", nargs='+', help="Target specific archive(s)")
+    _parser.add_argument("-r", "--recordIds", nargs='+', help="Target specific record(s)")
     _parser.add_argument("-fps", "--framesPerSecond", nargs='?', help="Frames per second to determine frame duration")
+    _parser.add_argument("-bg", "--backgroundColor", nargs=3, help="Specify the RGB background color (range 0-255)")
     _args = _parser.parse_args()
-    if _args.framesPerSecond is None:
-        print("No script arguments found. Ending script execution. Please supply the frames per second at least.")
+    if _args.framesPerSecond is None or _args.backgroundColor is None:
+        print("Supply at least a background color (-bg) and the frames per second (-fps).")
         exit()
     return _args
 
@@ -25,11 +26,12 @@ def removeTransparency(_img_path, _color=(0, 0, 0)):
 
 
 args = parseArgs()
+bg = (int(args.backgroundColor[0]), int(args.backgroundColor[1]), int(args.backgroundColor[2]))
 fps = int(args.framesPerSecond)
 archives = BLBFunctions.getArchives()
 for archiveId, records in archives.items():
-    if args.archiveId is not None:
-        if archiveId != args.archiveId:
+    if args.archiveIds is not None:
+        if archiveId not in args.archiveIds:
             continue
     archivePath = ""
     for recordId, frames in records.items():
@@ -37,8 +39,8 @@ for archiveId, records in archives.items():
             archivePath = frames
             continue
 
-        if args.recordId is not None:
-            if recordId != args.recordId:
+        if args.recordIds is not None:
+            if recordId not in args.recordIds:
                 continue
 
         images = []
@@ -47,7 +49,7 @@ for archiveId, records in archives.items():
             continue
         duration = (1 / fps) * 1000
         for frameId, frame in frames.items():
-            im = removeTransparency(frame["path"])
+            im = removeTransparency(frame["path"], bg)
             images.append(im)
         gifPath = os.path.join(archivePath, str(archiveId) + "_" + str(recordId) + ".gif")
         print("Saving", gifPath, "with frame length ", duration)

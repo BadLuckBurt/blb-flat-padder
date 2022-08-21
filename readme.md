@@ -58,3 +58,18 @@ Below are a few usage examples:
 
 By mixing the arguments you should be able to cover any situation you encounter. 
 If not, please let me know and I'll see what I can do.
+
+## BLBGIFMaker
+
+This script automatically generates GIFs.
+
+### Arguments
+You can use the following arguments to control which GIFs get generated:
+
+1. `-a <archiveID>` or `--archiveIds <archiveID>` Controls which archives are processed, you can add multiple archive IDs 
+separated by a blank space
+2. `-r <recordID>` or `--recordIds <recordID>` Controls which records are processed, you can add multiple record IDs 
+separated by a blank space
+3. `-fps <integer>` or `--framesPerSecond <integer>` Specify at how many frames per second the animation runs
+4. `-bg <0-255> <0-255> <0-255>` or `--backgroundColor <0-255> <0-255> <0-255>` The background color to use 
+for the GIF in 0-255 RGB format
