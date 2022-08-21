@@ -36,14 +36,18 @@ This script can create and / or bulk edit existing XML files for flat archives.
 ### Arguments
 All script arguments are optional but you must supply at least one argument to make your intentions clear.
 
-1. `-ax True|False` or `--archiveXML True|False` set to True to generate archive XMLs, defaults to False
-2. `-rx True|False` or `--recordXML True|False` set to True to generate record XMLs, default to True 
-3. `-r Opaque|Cutout|Fade|Transparent` or `--renderMode Opaque|Cutout|Fade|Transparent`
+1. `-af <archiveID>` or `--archiveFilter <archiveID>` Controls which archives are processed, you can add multiple archive IDs 
+separated by a blank space
+2. `-rf <recordID>` or `--recordFilter <recordID>` Controls which records are processed, you can add multiple record IDs 
+separated by a blank space 
+3. `-ax True|False` or `--archiveXML True|False` set to True to generate archive XMLs, defaults to False
+4. `-rx True|False` or `--recordXML True|False` set to True to generate record XMLs, default to True 
+5. `-r Opaque|Cutout|Fade|Transparent` or `--renderMode Opaque|Cutout|Fade|Transparent`
 set the render mode
-4. `-e True|False` or `--emission True|False` force the emission boolean to true or false. When omitted and an emission 
+6. `-e True|False` or `--emission True|False` force the emission boolean to true or false. When omitted and an emission 
 image is found it will default to True
-5. `-uv 0.0 0.0` or `--uv 0.0 0.0` specifies UV coordinates
-6. `-sm 1.0 1.0` or `--scaleMultiplier 1.0 1.0` manipulate existing scale values using this multiplier. 
+7. `-uv 0.0 0.0` or `--uv 0.0 0.0` specifies UV coordinates
+8. `-sm 1.0 1.0` or `--scaleMultiplier 1.0 1.0` manipulate existing scale values using this multiplier. 
 Default scale when creating a new XML is 1.0 for both scaleX and scaleY
 
 ### Usage examples
@@ -66,9 +70,9 @@ This script automatically generates GIFs.
 ### Arguments
 You can use the following arguments to control which GIFs get generated:
 
-1. `-a <archiveID>` or `--archiveIds <archiveID>` Controls which archives are processed, you can add multiple archive IDs 
+1. `-af <archiveID>` or `--archiveFilter <archiveID>` Controls which archives are processed, you can add multiple archive IDs 
 separated by a blank space
-2. `-r <recordID>` or `--recordIds <recordID>` Controls which records are processed, you can add multiple record IDs 
+2. `-rf <recordID>` or `--recordFilter <recordID>` Controls which records are processed, you can add multiple record IDs 
 separated by a blank space
 3. `-fps <integer>` or `--framesPerSecond <integer>` Specify at how many frames per second the animation runs
 4. `-bg <0-255> <0-255> <0-255>` or `--backgroundColor <0-255> <0-255> <0-255>` The background color to use 

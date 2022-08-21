@@ -6,8 +6,8 @@ import argparse
 
 def parseArgs():
     _parser = argparse.ArgumentParser()
-    _parser.add_argument("-a", "--archiveIds", nargs='+', help="Target specific archive(s)")
-    _parser.add_argument("-r", "--recordIds", nargs='+', help="Target specific record(s)")
+    _parser.add_argument("-af", "--archiveFilter", nargs='+', help="Target specific archive(s)")
+    _parser.add_argument("-rf", "--recordFilter", nargs='+', help="Target specific record(s)")
     _parser.add_argument("-fps", "--framesPerSecond", nargs='?', help="Frames per second to determine frame duration")
     _parser.add_argument("-bg", "--backgroundColor", nargs=3, help="Specify the RGB background color (range 0-255)")
     _args = _parser.parse_args()
@@ -30,8 +30,8 @@ bg = (int(args.backgroundColor[0]), int(args.backgroundColor[1]), int(args.backg
 fps = int(args.framesPerSecond)
 archives = BLBFunctions.getArchives()
 for archiveId, records in archives.items():
-    if args.archiveIds is not None:
-        if archiveId not in args.archiveIds:
+    if args.archiveFilter is not None:
+        if archiveId not in args.archiveFilter:
             continue
     archivePath = ""
     for recordId, frames in records.items():
@@ -39,8 +39,8 @@ for archiveId, records in archives.items():
             archivePath = frames
             continue
 
-        if args.recordIds is not None:
-            if recordId not in args.recordIds:
+        if args.recordFilter is not None:
+            if recordId not in args.recordFilter:
                 continue
 
         images = []

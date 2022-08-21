@@ -6,6 +6,8 @@ import BLBFunctions
 
 def parseArgs():
     _parser = argparse.ArgumentParser()
+    _parser.add_argument("-af", "--archiveFilter", nargs="+")
+    _parser.add_argument("-rf", "--recordFilter", nargs="+")
     _parser.add_argument("-ax", "--archiveXML", nargs='?', default='False', help="Generates XML at archive level")
     _parser.add_argument("-rx", "--recordXML", nargs='?', default='True', help="Generates XML at record level")
     _parser.add_argument("-r", "--renderMode", nargs='?', help="Sets renderMode")
@@ -79,6 +81,9 @@ scaleMultiplier[1] = float(scaleMultiplier[1])
 archives = BLBFunctions.getArchives()
 
 for archiveId, records in archives.items():
+    if args.archiveFilter is not None:
+        if archiveId not in args.archiveFilter:
+            continue
     for recordId, frames in records.items():
         if str(recordId) == "path":
             if args.archiveXML == "True":
@@ -112,6 +117,10 @@ for archiveId, records in archives.items():
 
         if args.recordXML == "False":
             continue
+
+        if args.recordFilter is not None:
+            if recordId not in args.recordFilter:
+                continue
 
         for frameId, frame in frames.items():
             if int(frameId) == 0:
