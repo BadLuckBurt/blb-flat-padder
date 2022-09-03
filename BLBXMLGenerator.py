@@ -125,13 +125,19 @@ for archiveId, records in archives.items():
         for frameId, frame in frames.items():
             if int(frameId) == 0:
                 # change emission setting based on emission image existence
-                emissivePath = frame["path"].replace(".png", "_Emission.png")
+                if frame["path"].endswith(".png"):
+                    emissivePath = frame["path"].replace(".png", "_Emission.png")
+                    xmlPath = frame["path"].replace(".png", ".xml")
+                else:
+                    emissivePath = frame["path"].replace(".PNG", "_Emission.png")
+                    xmlPath = frame["path"].replace(".PNG", ".xml")
+
                 if os.path.exists(emissivePath) and emission is None:
                     emission = True
 
                 # check for existing XML
                 newScale = [1, 1]
-                xmlPath = frame["path"].replace(".png", ".xml")
+
                 if os.path.exists(xmlPath):
                     tree = ET()
                     tree = tree.parse(xmlPath)

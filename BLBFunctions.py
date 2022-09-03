@@ -4,7 +4,8 @@ from PIL import Image
 
 
 def getArchives():
-    fileRegEx = r"^(\d+)\_(\d+)\-(\d+).(?:png|PNG)$"
+    animRegEx = r"^(\d+)\_(\d+)\-(\d+).(?:png|PNG)$"
+    singleRegEx = r"^(\d+)\_(\d+)\-(\d+).(?:png|PNG)$"
     workDirectoryContents = os.scandir()
 
     archives = {}
@@ -16,7 +17,7 @@ def getArchives():
             for obj in directoryContents:
                 if obj.is_file():
                     fileName = obj.name
-                    searchResult = re.search(fileRegEx, fileName)
+                    searchResult = re.search(animRegEx, fileName)
                     if searchResult:
                         archiveId = searchResult.group(1)
                         if archiveId not in archives:
